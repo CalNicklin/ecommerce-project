@@ -1,0 +1,32 @@
+{
+  "name": "ecommerce-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CalNicklin/ecommerce-project.git"
+  },
+  "keywords": [],
+  "author": "Callum Nicklin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CalNicklin/ecommerce-project/issues"
+  },
+  "homepage": "https://github.com/CalNicklin/ecommerce-project#readme",
+  "devDependencies": {
+    "@babel/core": "^7.20.5",
+    "@babel/node": "^7.20.5",
+    "@babel/preset-env": "^7.20.2",
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  }
+}
