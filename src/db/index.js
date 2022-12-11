@@ -1,3 +1,5 @@
+const { request, response, application } = require('express');
+const moment = require('moment');
 const { Pool } = require('pg');
 
 const pool = new Pool({
@@ -7,6 +9,8 @@ const pool = new Pool({
     password: process.env.PASSWORD,
     port: process.env.DBPORT,
 });
+
+// ***** MAKE THESE MODULAR *****
 
 // User Endpoints \\
 const getUsers = (request, response) => {
@@ -94,7 +98,47 @@ const getProductsBySku = (request, response) => {
     });
 };
 
+// End products endpoints \\
 
+// Cart Endpoints \\
+// POST /cart
+const createCart = (request, response) => {
+    const userid = request.user;
+    const created = moment.utc().toISOString();
+    const modified = moment.utc().toISOString();
+
+    pool.query('INSERT INTO cart (user_id, created_at, modified) VALUES ($1, $2, $3)', [userid, created, modified], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(201).json(results.rows)
+    });
+};
+
+// POST /cart/{cartId}
+const addToCartById = (request, response) => {
+    const cartid = request.params.id;
+    const { sku, qty } = request.body;
+
+    pool.query('INSERT INTO cartitems (cartid, sku, qty) VALUES ($1, $2, $3)', [cartid, sku, qty], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(201).json(results.rows)
+    });
+};
+
+// GET /cart/{cartId}
+const getCartById = (request, response) => {
+    const id = request.params.id;
+
+    pool.query('SELECT * FROM cartitems WHERE cartid = $1', [id], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    });
+};
 
 module.exports = {
     getUsers,
@@ -103,5 +147,8 @@ module.exports = {
     updateUser,
     deleteUser,
     getProducts,
-    getProductsBySku
+    getProductsBySku,
+    getCartById,
+    addToCartById,
+    createCart
 };

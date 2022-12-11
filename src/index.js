@@ -38,8 +38,17 @@ app.get('/products', db.getProducts);
 // /products/:sku
 app.get('/products/:sku', db.getProductsBySku);
 
-// /cart
-// /cart/:id
+// POST /cart
+app.post('/cart', db.createCart);
+
+// POST /cart/{cartId}
+app.post('/cart/items/:id', db.addToCartById);
+// curl -d '{"sku":"MTQ440T103", "qty":"4"}' -H "Content-Type: application/json" -X POST http://localhost:3000/cart/2
+
+// GET /cart/{cartId}
+app.get('/cart/:id', db.getCartById);
+
+
 // /orders
 // /orders/:id
 
