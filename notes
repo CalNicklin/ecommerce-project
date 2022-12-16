@@ -1,0 +1,10 @@
+Issue with passport middleware is that the db query expects a 
+request object from which to extract params or body.
+
+Instead it is being passed an object via the auth service.
+
+The fix needs to be implemented in the app post route and localstrategy
+cal@cal.com
+UnauthorizedError: Incorrect username or password
+    at _callee$ (/Users/Cal/Documents/PROJECTS/ecommerce-project/src/services/AuthService.js:17:23)
+
