@@ -3,7 +3,6 @@ require('dotenv').config();
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt-nodejs');
 const passport = require('passport');
-const axios = require('axios');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -11,15 +10,10 @@ const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const uuid = require('uuid').v4;
 
-const db = require('./db-original');
-const { login } = require('./services/AuthService');
+const db = require('./db');
 const { getUsers, getUserById, createUser, updateUser, deleteUser, getUserByEmail } = require('./models/user');
 const { getProducts, getProductsBySku } = require('./models/products');
 const { createCart, addToCart, getCartById } = require('./models/cart');
-
-const users = [
-    { id: '2f24vvg', email: 'test@test.com', password: 'password' }
-];
 
 // configure passport.js to use the local strategy
 passport.use(new LocalStrategy(
