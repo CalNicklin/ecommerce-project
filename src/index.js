@@ -1,6 +1,7 @@
 require('dotenv').config();
 // npm modules
 const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt-nodejs');
 const passport = require('passport');
 const axios = require('axios');
 const express = require('express');
@@ -12,7 +13,7 @@ const uuid = require('uuid').v4;
 
 const db = require('./db-original');
 const { login } = require('./services/AuthService');
-const { getUsers, getUserById, createUser, updateUser, deleteUser } = require('./models/user');
+const { getUsers, getUserById, createUser, updateUser, deleteUser, getUserByEmail } = require('./models/user');
 const { getProducts, getProductsBySku } = require('./models/products');
 const { createCart, addToCart, getCartById } = require('./models/cart');
 
@@ -31,19 +32,26 @@ passport.use(new LocalStrategy(
     //     }
     // }
     { usernameField: 'email' },
-    (email, password, done) => {
-        axios.get(`http://localhost:5000/users?email=${email}`)
-            .then(res => {
-                const user = res.data[0]
-                if (!user) {
-                    return done(null, false, { message: 'Invalid credentials.\n' });
-                }
-                if (password != user.password) {
-                    return done(null, false, { message: 'Invalid credentials.\n' });
-                }
-                return done(null, user);
-            })
-            .catch(error => done(error));
+    async (email, password, done) => {
+        try {
+            // Check if user exists
+            const user = await getUserByEmail(email);
+
+            // If no user found, reject
+            if (!user) {
+                return done(null, false, { message: 'Invalid credentials.\n' });
+            }
+
+            // Check for matching passwords
+            if (!bcrypt.compareSync(password, user.password)) {
+                return done(null, false, { message: 'Invalid credentials.\n' });
+            }
+
+            return done(null, user);
+
+        } catch (err) {
+            done(err);
+        };
     }
 ));
 
@@ -54,32 +62,8 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-    axios.get(`http://localhost:5000/users/${id}`)
-        .then(res => done(null, res.data))
-        .catch(error => done(error, false))
+    done(null, { id });
 });
-
-// passport.serializeUser(function (user, cb) {
-//     process.nextTick(function () {
-//         return cb(null, user.id);
-//     });
-// });
-
-// passport.deserializeUser(function (id, cb) {
-//     try {
-//         // Generate SQL statment
-//         const statement = `SELECT * FROM users WHERE id = $1`;
-//         const values = [id];
-
-//         // Execute SQL statement
-//         const result = db.query(statement, values);
-
-//         // return cb(null, user)
-
-//     } catch (err) {
-//         throw new Error(err);
-//     };
-// });
 
 // create the server
 const app = express();
@@ -87,7 +71,7 @@ const app = express();
 // add & configure middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
     genid: (req) => {
         console.log('Inside session middleware genid function')
@@ -110,33 +94,16 @@ app.get('/', (req, res) => {
     res.send(`You hit home page!\n`)
 });
 
-// /register
 app.post('/register', createUser);
 // curl -X POST http://localhost:3000/login -H "Content-Type: application/json" -d '{"username":"cal@cal.com", "password":"passw0rd"}' 
 
-// /users
 app.get('/users', getUsers);
 
-// // /users/:id
 app.get('/users/:id', getUserById);
 
 app.put('/users/:id', updateUser);
 
 app.delete('/users/:id', deleteUser);
-
-// /login
-// app.post('/login', passport.authenticate('local'), async (req, res, next) => {
-//     try {
-//         const { username, password } = req.body;
-
-//         const response = await login({ email: username, password });
-
-//         res.status(200).send(response)
-
-//     } catch (err) {
-//         next(err);
-//     }
-// });
 
 app.get('/login', (req, res) => {
     console.log('Inside GET /login callback function')

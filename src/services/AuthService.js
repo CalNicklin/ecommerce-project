@@ -15,7 +15,7 @@ const login = async (data) => {
         }
 
         // Check for matching passwords
-        if (user.password !== password) {
+        if (!bcrypt.compareSync(password, user.password)) {
             throw createError(401, 'Incorrect username or password');
         }
 
