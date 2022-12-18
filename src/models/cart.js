@@ -1,4 +1,4 @@
-const db = require('../db-original');
+const db = require('../db');
 const moment = require('moment');
 
 const createCart = async (request, response) => {

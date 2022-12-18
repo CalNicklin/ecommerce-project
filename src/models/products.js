@@ -1,4 +1,4 @@
-const db = require('../db-original');
+const db = require('../db');
 
 const getProducts = async (request, response) => {
     await db.query('SELECT * FROM products ORDER BY sku ASC', (error, results) => {

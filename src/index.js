@@ -115,16 +115,7 @@ app.post('/login', (req, res, next) => {
             return res.redirect('/authrequired');
         })
     })(req, res, next);
-})
-
-app.get('/authrequired', (req, res) => {
-    if (req.isAuthenticated()) {
-        res.send('you hit the authentication endpoint\n')
-    } else {
-        res.redirect('/')
-    }
-})
-
+});
 
 // curl -X POST http://localhost:3000/login -H "Content-Type: application/json" -d '{"username":"cal@cal.com", "password":"passw0rd"}'
 

@@ -1,4 +1,4 @@
-const db = require('../db-original');
+const db = require('../db');
 
 const getUsers = async (request, response) => {
     await db.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
