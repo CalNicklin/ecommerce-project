@@ -1,7 +1,7 @@
-const db = require('../db');
+const db = require('../db-original');
 
-export const getUsers = (request, response) => {
-    db.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
+const getUsers = async (request, response) => {
+    await db.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
         if (error) {
             throw error
         }
@@ -9,7 +9,7 @@ export const getUsers = (request, response) => {
     });
 };
 
-export const getUserById = async (request, response) => {
+const getUserById = async (request, response) => {
     const id = parseInt(request.params.id);
 
     try {
@@ -31,7 +31,7 @@ export const getUserById = async (request, response) => {
     };
 };
 
-export const createUser = async (request, response) => {
+const createUser = async (request, response) => {
     const { name, email, password } = request.body;
 
     try {
@@ -43,13 +43,13 @@ export const createUser = async (request, response) => {
         const result = await db.query(statement, values);
 
         return response.status(201).send(`User added with ID: ${result.rows[0].id}`);
-        
+
     } catch (err) {
         throw new Error(err)
     };
 };
 
-export const updateUser = (request, response) => {
+const updateUser = (request, response) => {
     const id = parseInt(request.params.id);
     const { name, email, password } = request.body;
 
@@ -65,7 +65,7 @@ export const updateUser = (request, response) => {
     );
 };
 
-export const deleteUser = async (request, response) => {
+const deleteUser = async (request, response) => {
     const id = parseInt(request.params.id);
 
     try {
@@ -83,7 +83,7 @@ export const deleteUser = async (request, response) => {
     };
 };
 
-export const getUserByEmail = async (email) => {
+const getUserByEmail = async (email) => {
     try {
 
         // Generate SQL statement
@@ -104,4 +104,13 @@ export const getUserByEmail = async (email) => {
     } catch (err) {
         throw new Error(err);
     }
+};
+
+module.exports = {
+    getUsers,
+    getUserById,
+    createUser,
+    updateUser,
+    deleteUser,
+    getUserByEmail
 };

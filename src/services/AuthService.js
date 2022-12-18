@@ -1,7 +1,7 @@
-import { getUserByEmail } from '../models/user';
+const getUserByEmail = require('../models/user');
 const createError = require('http-errors');
 
-export const login = async (data) => {
+const login = async (data) => {
 
     const { email, password } = data;
 
@@ -24,5 +24,8 @@ export const login = async (data) => {
     } catch (err) {
         throw createError(500, err);
     }
+};
 
+module.exports = {
+    login
 };

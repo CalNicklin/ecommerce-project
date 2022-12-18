@@ -8,3 +8,8 @@ cal@cal.com
 UnauthorizedError: Incorrect username or password
     at _callee$ (/Users/Cal/Documents/PROJECTS/ecommerce-project/src/services/AuthService.js:17:23)
 
+
+Fix session and passport cookies so that req.user and authentication persists
+
+Setup db maintenance(vacuum, index)
+
