@@ -28,7 +28,21 @@ const createOrder = async (id, orderTotal) => {
             const result = await db.query(statement);
 
             if (result.rows.length) {
-                return result.rows;
+
+                // // Make charge to payment method (not required in this project)
+                // const stripe = require('stripe')('sk_test_FOY6txFJqPQvJJQxJ8jpeLYQ');
+
+                // const charge = await stripe.charges.create({
+                //     amount: orderTotal,
+                //     currency: 'usd',
+                //     source: 1,
+                //     description: 'Order Charge'
+                // });
+
+                // // On successful charge to payment method, update order status to COMPLETE
+                const order = update(orderId, id);
+
+                return JSON.stringify(result.rows);
             };
 
         } catch (err) {
@@ -40,6 +54,34 @@ const createOrder = async (id, orderTotal) => {
     };
 };
 
+const update = async (orderId) => {
+    try {
+
+        // Column details can be taken from the data object:
+        const status = { status: 'complete' }
+
+        // // Generate SQL statement - using helper for dynamic parameter injection
+        // const statement = pgp.helpers.insert(status, null, 'orders');
+
+        // Generate SQL statement - using helper for dynamic parameter injection
+        const condition = pgp.as.format('WHERE order_id = ${orderId} RETURNING *', { orderId });
+        const statement = pgp.helpers.update(status, null, 'orders') + condition;
+
+        // Execute SQL statment
+        const result = await db.query(statement);
+
+        if (result.rows?.length) {
+            return result.rows[0];
+        }
+
+        return null;
+
+    } catch (err) {
+        throw new Error(err);
+    }
+}
+
 module.exports = {
-    createOrder
+    createOrder,
+    update
 };

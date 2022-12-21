@@ -89,9 +89,9 @@ const checkout = async (request, response) => {
                 0
             );
 
-            const orderDetails = await createOrder(id, orderTotal);
+            const order = await createOrder(id, orderTotal);
 
-            return response.status(200).send(`Your order summary is ${orderDetails}`);
+            return response.status(200).send(`Your order summary is ${order}`);
         }
 
         return response.status(404).send('No cart to checkout');
