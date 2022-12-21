@@ -1,3 +1,4 @@
+const { response } = require('express');
 const db = require('../db');
 const pgp = require('pg-promise')({ capSQL: true });
 
@@ -78,10 +79,52 @@ const update = async (orderId) => {
 
     } catch (err) {
         throw new Error(err);
-    }
-}
+    };
+};
+
+const getOrders = async (request, response) => {
+    const { id } = request.user;
+
+    try {
+        // Generate SQL statement
+        const statement = `SELECT order_id
+                       FROM orders
+                       WHERE customer_id = $1`;
+        const values = [id];
+
+        // Execute SQL statement
+        const result = await db.query(statement, values);
+
+        return response.status(200).send(result.rows);
+
+    } catch (err) {
+        throw new Error(err);
+    };
+};
+
+const getOrderById = async (request, response) => {
+    const order_id = request.params.id;
+
+    try {
+        // Generate SQL statement
+        const statement = `SELECT sku, qty FROM orders_items
+        WHERE order_id = $1`;
+        const values = [order_id];
+
+        // Execute SQL statement
+        const result = await db.query(statement, values);
+        const rows = JSON.stringify(result.rows);
+
+        return response.status(200).send(`Order ${order_id} Details: ${rows}`);
+
+    } catch (err) {
+        throw new Error(err);
+    };
+};
 
 module.exports = {
     createOrder,
-    update
-};
+    update,
+    getOrders,
+    getOrderById
+}
