@@ -13,7 +13,7 @@ const uuid = require('uuid').v4;
 const db = require('./db');
 const { getUsers, getUserById, createUser, updateUser, deleteUser, getUserByEmail } = require('./models/user');
 const { getProducts, getProductsBySku } = require('./models/products');
-const { createCart, addToCart, getCartById } = require('./models/cart');
+const { createCart, addToCart, getCartById, checkout } = require('./models/cart');
 
 // configure passport.js to use the local strategy
 passport.use(new LocalStrategy(
@@ -51,7 +51,7 @@ passport.use(new LocalStrategy(
 
 // tell passport how to serialize the user
 passport.serializeUser((user, done) => {
-    console.log('Inside serializeUser callback. User id is save to the session file store here')
+    console.log('Inside serializeUser callback. User id is saved to the session file store here')
     done(null, user.id);
 });
 
@@ -75,7 +75,7 @@ app.use(session({
     store: new FileStore(),
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false
 }))
 app.use(passport.initialize());
 app.use(passport.session());
@@ -117,7 +117,11 @@ app.post('/login', (req, res, next) => {
     })(req, res, next);
 });
 
-// curl -X POST http://localhost:3000/login -H "Content-Type: application/json" -d '{"username":"cal@cal.com", "password":"passw0rd"}'
+// curl http://localhost:3000/login -c cookie-file.txt -H 'Content-Type: application/json' -d '{"email":"chlo@cal.com", "password":"passw0rd"}' -L
+
+app.get('/authrequired', (req, res, next) => {
+    res.send('You are in the authorised section')
+})
 
 //  /logout
 app.post('/logout', function (req, res, next) {
@@ -137,11 +141,14 @@ app.get('/products/:sku', getProductsBySku);
 app.post('/cart', createCart);
 
 // POST /cart/{cartId}
-app.post('/cart/items/:cartid', addToCart);
-// curl -d '{"sku":"MTQ440T103", "qty":"4"}' -H "Content-Type: application/json" -X POST http://localhost:3000/cart/2
+app.post('/cart/items', addToCart);
+// curl -d '{"sku":"MTQ440T103", "qty":"4"}' -H "Content-Type: application/json" -X POST http://localhost:3000/cart/items -b cookie-file.txt
 
 // GET /cart/{cartId}
 app.get('/cart', getCartById);
+
+// GET /cart/checkout
+app.get('/cart/checkout', checkout);
 
 
 // /orders

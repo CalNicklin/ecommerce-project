@@ -4,4 +4,3 @@ Setup db maintenance(vacuum, index)
 
 
 Fix passport deserializeuser to get the right id
-Fix GET /cart route
