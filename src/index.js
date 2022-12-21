@@ -16,5 +16,3 @@ const startServer = async () => {
 };
 
 startServer();
-
-// curl --data "username=cal@cal.com&password=passw0rd" http://localhost:3000/login

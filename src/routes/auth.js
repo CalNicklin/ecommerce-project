@@ -7,14 +7,14 @@ module.exports = (app, passport) => {
     app.use('/auth', router);
 
     router.post('/register', createUser);
-    // curl -X POST http://localhost:3000/login -H "Content-Type: application/json" -d '{"username":"cal@cal.com", "password":"passw0rd"}' 
-
+    
     router.get('/login', (req, res) => {
         console.log('Inside GET /login callback function')
         console.log(req.sessionID)
         res.send(`You got the login page!\n`)
     });
-
+    
+    // curl http://localhost:3000/auth/login -c cookie-file.txt -H 'Content-Type: application/json' -d '{"email":"chlo@cal.com", "password":"passw0rd"}' -L
     router.post('/login', (req, res, next) => {
         passport.authenticate('local', (err, user, info) => {
             if (info) { return res.send(info.message) }
@@ -22,12 +22,11 @@ module.exports = (app, passport) => {
             if (!user) { return res.redirect('/login'); }
             req.login(user, (err) => {
                 if (err) { return next(err); }
-                return res.redirect('/authrequired');
+                return res.redirect('/auth/authrequired');
             })
         })(req, res, next);
     });
-
-    // curl http://localhost:3000/login -c cookie-file.txt -H 'Content-Type: application/json' -d '{"email":"chlo@cal.com", "password":"passw0rd"}' -L
+    
 
     router.get('/authrequired', (req, res, next) => {
         res.send('You are in the authorised section')
