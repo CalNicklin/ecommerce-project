@@ -1,0 +1,371 @@
+openapi: 3.0.3
+info:
+  title: E-Commerce REST API
+  version: 1.0.0
+  description: Codecademy REST API practice project.
+paths:
+  /:
+    summary: Home page.
+    description: This is the home page path.
+    get:
+      summary: Home page.
+      description: Renders the home page
+      operationId: get_home
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                /:
+                  value: '''You''ve hit the home page!'''
+      tags:
+        - /
+  /auth/login:
+    summary: User login path.
+    description: This is the entry point for registered user login.
+    get:
+      summary: Login page.
+      description: Renders the user login page.
+      operationId: get_auth/login
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Auth
+    post:
+      summary: User login action.
+      description: >-
+        Sends user login credentials via HTTP request, authenticates via
+        passport and redirects to authorised area.
+      operationId: post_auth/login
+      requestBody:
+        description: A login object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                login:
+                  value: '''You are in the authorised section'''
+      tags:
+        - Auth
+  /auth/register:
+    summary: User registration
+    description: This is the endpoint for registering a new user.
+    post:
+      summary: Register a new user.
+      description: Registers a new user via HTTP and req.body
+      operationId: post_auth/register
+      requestBody:
+        description: A user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+        required: true
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                register:
+                  value: 'User added with ID: ${result.rows[0].id}'
+      tags:
+        - Auth
+  /cart:
+    summary: User cart.
+    description: This endpoint creates or retrieves a user cart.
+    get:
+      summary: Retrieves a user cart.
+      description: Finds a user's cart from the DB based on their logged-in user.id.
+      operationId: get_cart
+      parameters:
+        - name: id
+          in: cookie
+          description: The id of the user.
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                cart:
+                  value: '[{"sku":"MTQ440T103","qty":4}]'
+      tags:
+        - Cart
+    post:
+      summary: Initialize an empty cart.
+      description: Creates a db cart entry for a logged-in user.
+      operationId: post_cart
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                create cart:
+                  value: Created cart for user with ID:${id}
+      tags:
+        - Cart
+  /cart/items:
+    summary: Cart contents
+    description: View items in a specific user cart.
+    post:
+      summary: Add to cart.
+      description: Sends item data to user cart.
+      operationId: post_cart/items
+      requestBody:
+        description: A cart object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartItems'
+        required: true
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                add to cart:
+                  value: ${qty} x ${sku} added to cart
+      tags:
+        - Cart
+  /cart/checkout:
+    summary: Checkout cart
+    description: This endpoint for checking out a user order/cart.
+    get:
+      summary: Checkout cart
+      description: Creates an order from user cart.
+      operationId: get_cart/checkout
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                checkout:
+                  value: Your order summary is ${order}
+      tags:
+        - Cart
+  /orders:
+    summary: Retrieve a user order
+    description: This endpoint access a logged-in user's order history.
+    get:
+      summary: Retrieve user orders.
+      description: Finds all orders related to the logged in user.
+      operationId: get_orders
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                orders:
+                  value: '[{"order_id":50}]'
+      tags:
+        - Orders
+  /orders/:{id}:
+    summary: Get specific order information.
+    description: This retrieves a specific order by its id.
+    get:
+      summary: Retrieve a user order by id.
+      description: Retrieves a specific user order by its id.
+      operationId: get_orders/:id
+      parameters:
+        - name: id
+          in: path
+          description: The id of the order.
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                order by id:
+                  value: '[{"sku":"MTQ440T103","qty":4}]'
+      tags:
+        - Orders
+  /products:
+    summary: Products endpoint
+    description: Access the products information.
+    get:
+      summary: Finds the products from db.
+      description: Retrieves all products from the db.
+      operationId: get_products
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                get products:
+                  value: >-
+                    [{"sku":"BEAR-HT-100","product_name":"BEAR Head Tube 100
+                    (Expo 48cm, RAW
+                    S)","supplier_name":"BEAR","price":null},{"sku":"MTQ440T103","product_name":"AspectTi
+                    Deda Down Tube K-19 44*.9*680 Round - Custom
+                    Shape.","supplier_name":"Deda","price":null}]
+      tags:
+        - Products
+  /products/:{sku}:
+    summary: Specific product data
+    description: Access specific product data by its sku.
+    get:
+      summary: Get product by sku.
+      description: Retrieves product data by its sku.
+      operationId: get_products/:sku
+      parameters:
+        - name: sku
+          in: path
+          description: The sku of the product.
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                product by sku:
+                  value: >-
+                    [{"sku":"MTQ440T103","product_name":"AspectTi Deda Down Tube
+                    K-19 44*.9*680 Round - Custom
+                    Shape.","supplier_name":"Deda","price":null}]
+      tags:
+        - Products
+  /users:
+    summary: User data.
+    description: Update or retrieve all users data.
+    get:
+      summary: All user data.
+      description: Retrieves all user data from db.
+      operationId: get_users
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                get users:
+                  value: >-
+                    [{"id":7,"name":"Chloe
+                    N","email":"chlo@cal.com","password":"$2a$10$5/wfveVR/opujx/KlTMe.uFkgHrf5KdopeMNXISJ8nBfCEK0RuR6u","logged_in":false},{"id":10,"name":"Cal
+                    N","email":"cal@cal.com","password":"$2a$10$5/wfveVR/opujx/KlTMe.uFkgHrf5KdopeMNXISJ8nBfCEK0RuR6u","logged_in":false}]
+      tags:
+        - Users
+  /users/:{id}:
+    summary: Specific user data.
+    description: Update or delete user data by its id.
+    get:
+      summary: Users data by its id.
+      description: Finds specific user data by its id.
+      operationId: get_users/:id.
+      parameters:
+        - name: id
+          in: path
+          description: The user id.
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                get user by id:
+                  value: >-
+                    [{"id":7,"name":"Chloe
+                    N","email":"chlo@cal.com","password":"$2a$10$5/wfveVR/opujx/KlTMe.uFkgHrf5KdopeMNXISJ8nBfCEK0RuR6u","logged_in":false}]
+      tags:
+        - Users
+    put:
+      summary: Update user.
+      description: Update a specific user by its id.
+      operationId: put_users/:id
+      parameters:
+        - name: id
+          in: path
+          description: The user id.
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                update user by id:
+                  value: User modified with ID:${id}
+      tags:
+        - Users
+    delete:
+      summary: Delete user
+      description: Find and delete a specific user by id.
+      operationId: delete_users/:id.
+      parameters:
+        - name: id
+          in: path
+          description: The user id.
+          required: true
+          schema:
+            type: string
+      responses:
+        default:
+          description: Default error sample response
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Delete user:
+                  value: User deleted with ID:${id}
+      tags:
+        - Users
+components:
+  schemas:
+    Register:
+        type: object
+        properties:
+          name:
+            type: string
+          email:
+            type: string
+          password:
+            type: string
+        xml:
+          name: Login
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      xml:
+        name: Login
+    CartItems:
+      type: object
+      properties:
+        sku:
+          type: string
+        qty:
+          type: integer
+      xml:
+        name: CartItems
+
