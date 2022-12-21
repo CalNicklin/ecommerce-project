@@ -6,8 +6,8 @@ module.exports = (app) => {
 
     app.use('/orders', router);
 
-    router.get('/orders', getOrders);
+    router.get('/', getOrders);
 
-    router.get('/orders/:id', getOrderById);
+    router.get('/:id', getOrderById);
     
 };

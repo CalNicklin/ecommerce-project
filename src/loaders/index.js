@@ -13,5 +13,5 @@ module.exports = async (app) => {
     // Load API route handlers
     await routeLoader(app, passport);
 
-    
+
 }

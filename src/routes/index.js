@@ -12,7 +12,7 @@ module.exports = (app, passport) => {
     authRouter(app, passport)
 
     app.get('/', (req, res) => {
-        res.send(`You hit home page!\n`)
+        res.status(200).send(`You hit home page!\n`)
     });
 
     app.post('/logout', function (req, res, next) {

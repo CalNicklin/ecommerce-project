@@ -6,11 +6,11 @@ module.exports = (app) => {
 
     app.use('/users', router);
 
-    router.get('/users', getUsers);
+    router.get('/', getUsers);
 
-    router.get('/users/:id', getUserById);
+    router.get('/:id', getUserById);
 
-    router.put('/users/:id', updateUser);
+    router.put('/:id', updateUser);
 
-    router.delete('/users/:id', deleteUser);
+    router.delete('/:id', deleteUser);
 };
