@@ -20,12 +20,14 @@ const getProductsBySku = async (request, response) => {
         // Execute SQL statement
         const result = await db.query(statement, values);
 
-        if (result.rows?.length) {
-            response.status(200).send(result.rows);
+        if (!result.rows?.length) {
+            return response.status(404).send(`No products found with SKU:${sku}`);
         }
+        
+        else {
+            return response.status(200).send(result.rows);
+        };
 
-        return response.status(404).send(`No products found with SKU:${sku}`);
-    
     } catch (err) {
         throw new Error(err);
     };

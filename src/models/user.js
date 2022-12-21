@@ -49,20 +49,23 @@ const createUser = async (request, response) => {
     };
 };
 
-const updateUser = (request, response) => {
+const updateUser = async (request, response) => {
     const id = parseInt(request.params.id);
     const { name, email, password } = request.body;
 
-    db.query(
-        'UPDATE users SET name = $1, email = $2, password = $3 WHERE id = $4',
-        [name, email, password, id],
-        (error, results) => {
-            if (error) {
-                throw error
-            }
-            response.status(200).send(`User modified with ID:${id}`)
-        }
-    );
+    try {
+        // Generate SQL statement
+        const statement = 'UPDATE users SET name = $1, email = $2, password = $3 WHERE id = $4';
+        const values = [name, email, password, id];
+
+        // Execute SQL statement
+        const result = await db.query(statement, values);
+
+        return response.status(201).send(`User modified with ID:${id}`);
+        
+    } catch (err) {
+        throw new Error(err);
+    };
 };
 
 const deleteUser = async (request, response) => {
