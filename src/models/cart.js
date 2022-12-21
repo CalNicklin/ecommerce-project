@@ -89,7 +89,7 @@ const checkout = async (request, response) => {
                 0
             );
 
-            const orderDetails = createOrder(id, orderTotal);
+            const orderDetails = await createOrder(id, orderTotal);
 
             return response.status(200).send(`Your order summary is ${orderDetails}`);
         }
