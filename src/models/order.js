@@ -6,7 +6,7 @@ const createOrder = async (id, orderTotal) => {
     try {
         // Generate SQL statement
         const statement = `INSERT INTO orders (customer_id, total)
-        VALUES ($1, $2) RETURNING order_id`;
+                           VALUES ($1, $2) RETURNING order_id`;
         const values = [id, orderTotal];
 
         // Execute SQL statement

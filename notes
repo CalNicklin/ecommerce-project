@@ -1,6 +1,5 @@
-
-
 Setup db maintenance(vacuum, index)
 
+Modular routes
 
-Fix passport deserializeuser to get the right id
+Modular functions

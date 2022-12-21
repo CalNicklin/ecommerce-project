@@ -150,7 +150,6 @@ app.get('/cart', getCartById);
 // GET /cart/checkout
 app.get('/cart/checkout', checkout);
 
-
 // /orders
 // /orders/:id
 

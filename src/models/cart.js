@@ -3,19 +3,21 @@ const moment = require('moment');
 const { createOrder } = require('./order');
 
 const createCart = async (request, response) => {
-    const userId = request.user;
-    const created = moment.utc().toISOString();
-    const modified = created;
+    const { id } = request.user;
+    const created_at = moment.utc().toISOString();
+    const modified = created_at;
 
     try {
 
         // Generate SQL statement
-        const values = [userId, created, modified]
+        const statement = `INSERT INTO cart (user_id, created_at, modified)
+                           VALUES ($1, $2, $3)`;
+        const values = [id, created_at, modified]
 
         // Execute SQL statement
         const result = await db.query(statement, values);
 
-        return response.status(201).send(`Created cart for user with ID:${userId}`);
+        return response.status(201).send(`Created cart for user with ID:${id}`);
 
     } catch (err) {
         throw new Error(err)
@@ -100,10 +102,6 @@ const checkout = async (request, response) => {
         throw new Error(err)
     };
 }
-// Get total price of cart items
-// Generate order
-// Process the total through a checkout function
-// Create a completed order with item details
 
 module.exports = {
     getCartById,
