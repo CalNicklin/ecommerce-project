@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-
 const loaders = require('./loaders');
 
 const startServer = async () => {
