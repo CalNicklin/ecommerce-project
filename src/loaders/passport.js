@@ -9,6 +9,16 @@ module.exports = (app) => {
     app.use(passport.initialize());
     app.use(passport.session());
 
+    // tell passport how to serialize the user
+    passport.serializeUser((user, done) => {
+        console.log('Inside serializeUser callback. User id is saved to the session file store here')
+        done(null, user.id);
+    });
+
+    passport.deserializeUser((id, done) => {
+        done(null, { id });
+    });
+
     // configure passport.js to use the local strategy
     passport.use(new LocalStrategy(
         { usernameField: 'email' },
@@ -34,16 +44,6 @@ module.exports = (app) => {
             };
         }
     ));
-
-    // tell passport how to serialize the user
-    passport.serializeUser((user, done) => {
-        console.log('Inside serializeUser callback. User id is saved to the session file store here')
-        done(null, user.id);
-    });
-
-    passport.deserializeUser((id, done) => {
-        done(null, { id });
-    });
 
     return passport;
 

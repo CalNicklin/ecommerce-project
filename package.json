@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "nodemon --exec babel-node src/index.js",
+    "server": "nodemon src/index.js --ignore ./view",
     "dev:server": "nodemon --ignore sessions/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -26,7 +27,7 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
-    "axios": "^1.2.1",
+    "axios": "^1.2.2",
     "bcrypt-nodejs": "^0.0.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

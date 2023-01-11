@@ -29,7 +29,7 @@ module.exports = (app, passport) => {
     
 
     router.get('/authrequired', (req, res, next) => {
-        res.send('You are in the authorised section')
+        res.status(200).send('You are in the authorised section')
     });
 
 };

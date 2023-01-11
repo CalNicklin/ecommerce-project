@@ -1,18 +1,13 @@
 import React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from '../features/Login/Login';
+import Login from '../features/login/Login'
+import './App.css';
 
-export default function App() {
+function App() {
   return (
-    <React.Fragment>
-      <CssBaseline />
-      <Router>
-        <Routes>
-          <Route path='/' element={<Login />} />
-        </Routes>
-      </Router>
-    </React.Fragment>
+    <div>
+      <Login />
+    </div>
   );
-};
+}
 
+export default App;

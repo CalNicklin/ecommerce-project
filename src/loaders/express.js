@@ -7,7 +7,13 @@ const uuid = require('uuid').v4;
 module.exports = (app) => {
 
     // Enable Cross Origin Resource Sharing to all origins by default
-    app.use(cors());
+    app.use(
+        cors({
+            origin: "http://localhost:3000",
+            methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
+            credentials: true,
+        })
+    );
 
     // Transforms raw string of req.body into JSON
     app.use(bodyParser.json());
@@ -25,7 +31,13 @@ module.exports = (app) => {
         store: new FileStore(),
         secret: 'keyboard cat',
         resave: false,
-        saveUninitialized: false
+        saveUninitialized: false,
+        cookie: {
+            sameSite: false,
+            secure: true,
+            maxAge: 1000,
+            httpOnly: true,
+        },
     }));
 
     return app;
