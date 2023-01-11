@@ -7,13 +7,7 @@ const uuid = require('uuid').v4;
 module.exports = (app) => {
 
     // Enable Cross Origin Resource Sharing to all origins by default
-    app.use(
-        cors({
-            origin: "http://localhost:3000",
-            methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
-            credentials: true,
-        })
-    );
+    app.use(cors());
 
     // Transforms raw string of req.body into JSON
     app.use(bodyParser.json());
