@@ -40,7 +40,7 @@ module.exports = (app) => {
 };
 
 
-git rm -r --cached sessions
-git commit -am "Remove sessions"
+git rm -r --cached .env
+git commit -am "Remove .env"
 git push origin main
 
