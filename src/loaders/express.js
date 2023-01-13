@@ -38,3 +38,9 @@ module.exports = (app) => {
 
     return app;
 };
+
+
+git rm -r --cached node_modules
+git commit -am "Remove node_modules folder"
+git push origin main
+
