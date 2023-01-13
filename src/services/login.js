@@ -16,10 +16,10 @@ const login = async function (data) {
             throw createError(401, 'Incorrect username or password');
         }
 
-        // // Check for matching passwords
-        // if (!bcrypt.compareSync(password, user.password)) {
-        //     throw createError(401, 'Incorrect username or password');
-        // }
+        // Check for matching passwords
+        if (!bcrypt.compareSync(password, user.password)) {
+            throw createError(401, 'Incorrect username or password');
+        }
 
         return user;
 

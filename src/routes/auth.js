@@ -14,7 +14,7 @@ module.exports = (app, passport) => {
         console.log(req.sessionID)
         res.send(`You got the login page!\n`)
     });
-    
+        
     // curl http://localhost:3000/auth/login -c cookie-file.txt -H 'Content-Type: application/json' -d '{"email":"chlo@cal.com", "password":"passw0rd"}' -L
     router.post('/login', passport.authenticate('local'), async (req, res, next) => {
         try {
