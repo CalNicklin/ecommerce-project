@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { login } from 'src/api';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -29,15 +30,22 @@ function Copyright(props) {
 
 const theme = createTheme();
 
+
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const credentials = {
       email: data.get('email'),
       password: data.get('password'),
     };
-    login(credentials);
+    try {
+      await login(credentials);
+      navigate('/dashboard');
+    } catch (err) {
+      
+    }
   };
 
   return (

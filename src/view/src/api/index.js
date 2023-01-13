@@ -1,7 +1,14 @@
 import axios from "axios"
 
 export const login = async (data) => {
-  await axios.post('http://localhost:8000/auth/login', data);
+  try {
+    const response = await axios.post('http://localhost:8000/auth/login', data);
+
+    return response.data;
+
+  } catch (err) {
+    throw err.response.data;
+  }
 };
 
 export const getProducts = async () => {
