@@ -40,7 +40,7 @@ module.exports = (app) => {
 };
 
 
-git rm -r --cached node_modules
-git commit -am "Remove node_modules folder"
+git rm -r --cached sessions
+git commit -am "Remove sessions"
 git push origin main
 
