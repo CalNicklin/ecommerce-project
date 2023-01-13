@@ -1,6 +1,7 @@
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt-nodejs');
 const passport = require('passport');
+const createError = require('http-errors');
 const { getUserByEmail } = require('../models/user');
 
 module.exports = (app) => {
@@ -29,12 +30,12 @@ module.exports = (app) => {
 
                 // If no user found, reject
                 if (!user) {
-                    return done(null, false, { message: 'Invalid credentials.\n' });
+                    throw createError(401, 'Incorrect username or password');
                 };
 
                 // Check for matching passwords
                 if (!bcrypt.compareSync(password, user.password)) {
-                    return done(null, false, { message: 'Invalid credentials.\n' });
+                    throw createError(401, 'Incorrect username or password');
                 };
 
                 return done(null, user);
