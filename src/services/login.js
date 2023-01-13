@@ -11,10 +11,10 @@ const login = async function (data) {
         // Check if user exists
         const user = await getUserByEmail(email);
 
-        // // If no user found, reject
-        // if (!user) {
-        //     throw createError(401, 'Incorrect username or password');
-        // }
+        // If no user found, reject
+        if (!user) {
+            throw createError(401, 'Incorrect username or password');
+        }
 
         // // Check for matching passwords
         // if (!bcrypt.compareSync(password, user.password)) {
