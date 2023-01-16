@@ -14,6 +14,8 @@ import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 //
 import navConfig from './config';
+import { useUserContext } from 'src/context/user';
+
 
 // ----------------------------------------------------------------------
 
@@ -38,6 +40,8 @@ export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
+
+  const { user } = useUserContext();
 
   useEffect(() => {
     if (openNav) {
@@ -64,7 +68,7 @@ export default function Nav({ openNav, onCloseNav }) {
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
+                {user.name}
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
