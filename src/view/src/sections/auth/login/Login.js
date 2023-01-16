@@ -39,6 +39,7 @@ export default function SignIn() {
   const navigate = useNavigate();
   const { login } = useUserContext();
   const [incorrectCred, setIncorrectCred] = useState(false);
+  const [loginResponse, setLoginResponse] = useState('');
 
 
 
@@ -54,8 +55,8 @@ export default function SignIn() {
       login(user)
       navigate('/dashboard');
     } catch (err) {
+      setLoginResponse('Incorrect username or password');
       setIncorrectCred(true);
-      console.log('Incorrect username or password');
     }
 
     return null;
@@ -102,7 +103,7 @@ export default function SignIn() {
             />
 
             <Typography variant="body2" sx={{ mb: 5, color: red.A700 }}>
-              {incorrectCred && 'Incorrect username or password.'}
+              {incorrectCred && `${loginResponse}`}
             </Typography>
 
             <FormControlLabel
