@@ -39,8 +39,3 @@ module.exports = (app) => {
     return app;
 };
 
-
-git rm -r --cached .DS_store
-git commit -am "Remove DS_store"
-git push origin main
-

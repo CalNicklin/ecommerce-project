@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,8 +13,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { login } from 'src/api';
+import { login as auth } from 'src/api';
 import { useNavigate } from 'react-router-dom';
+import { useUserContext } from 'src/context/user';
+import { red } from '@mui/material/colors';
 
 function Copyright(props) {
   return (
@@ -32,7 +35,13 @@ const theme = createTheme();
 
 
 export default function SignIn() {
+
   const navigate = useNavigate();
+  const { login } = useUserContext();
+  const [incorrectCred, setIncorrectCred] = useState(false);
+
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -41,11 +50,15 @@ export default function SignIn() {
       password: data.get('password'),
     };
     try {
-      await login(credentials);
+      const user = await auth(credentials);
+      login(user)
       navigate('/dashboard');
     } catch (err) {
-      
+      setIncorrectCred(true);
+      console.log('Incorrect username or password');
     }
+
+    return null;
   };
 
   return (
@@ -87,6 +100,11 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
             />
+
+            <Typography variant="body2" sx={{ mb: 5, color: red.A700 }}>
+              {incorrectCred && 'Incorrect username or password.'}
+            </Typography>
+
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"

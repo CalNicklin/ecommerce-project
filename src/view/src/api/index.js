@@ -4,6 +4,7 @@ export const login = async (data) => {
   try {
     const response = await axios.post('http://localhost:8000/auth/login', data);
 
+    console.log(response.data)
     return response.data;
 
   } catch (err) {
@@ -12,8 +13,13 @@ export const login = async (data) => {
 };
 
 export const getProducts = async () => {
-  const res = await fetch('http://localhost:8000/products/', {
-    method: 'GET'
-  })
-  return res;
+  try {
+    const response = await axios('http://localhost:8000/products');
+
+    console.log(response.data);
+    return response.data;
+
+  } catch (err) {
+    throw err.response.data;
+  }
 };

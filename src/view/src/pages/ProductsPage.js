@@ -1,16 +1,19 @@
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // @mui
 import { Container, Stack, Typography } from '@mui/material';
 // components
 import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } from '../sections/@dashboard/products';
 // mock
-import PRODUCTS from '../_mock/products';
+
+import { getProducts } from 'src/api';
 
 // ----------------------------------------------------------------------
 
 export default function ProductsPage() {
   const [openFilter, setOpenFilter] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  const [products, setProducts] = useState([]);
 
   const handleOpenFilter = () => {
     setOpenFilter(true);
@@ -19,6 +22,15 @@ export default function ProductsPage() {
   const handleCloseFilter = () => {
     setOpenFilter(false);
   };
+
+  // GETs product data via API/index.js, sets local state.
+  useEffect(() => {
+      getProducts()
+        .then((data) => {
+          setProducts(data)
+          setLoading(false); 
+        })
+  }, []);
 
   return (
     <>
@@ -42,7 +54,8 @@ export default function ProductsPage() {
           </Stack>
         </Stack>
 
-        <ProductList products={PRODUCTS} />
+        
+        <ProductList products={products} />
         <ProductCartWidget />
       </Container>
     </>

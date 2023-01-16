@@ -5,15 +5,18 @@ import ThemeProvider from './theme';
 // components
 import ScrollToTop from './components/scroll-to-top';
 import { StyledChart } from './components/chart';
+import { UserProvider } from './context/user';
 
 // ----------------------------------------------------------------------
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <ScrollToTop />
-      <StyledChart />
-      <Router />
-    </ThemeProvider>
+    <UserProvider>
+      <ThemeProvider>
+        <ScrollToTop />
+        <StyledChart />
+        <Router />
+      </ThemeProvider>
+    </UserProvider>
   );
 }
