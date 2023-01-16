@@ -17,6 +17,7 @@ module.exports = (app) => {
     });
 
     passport.deserializeUser((id, done) => {
+        console.log('Inside DeserializeUser callback. User id is saved to the session file store here')
         done(null, { id });
     });
 
