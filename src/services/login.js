@@ -1,6 +1,6 @@
 const { getUserByEmail } = require("../models/user");
 const createError = require('http-errors');
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcryptjs');
 
 
 const login = async function (data) {
@@ -17,7 +17,7 @@ const login = async function (data) {
         }
 
         // Check for matching passwords
-        if (!bcrypt.compareSync(password, user.password)) {
+        if (!bcrypt.compare(password, user.password)) {
             throw createError(401, 'Incorrect username or password');
         }
 

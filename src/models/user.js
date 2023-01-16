@@ -31,24 +31,6 @@ const getUserById = async (request, response) => {
     };
 };
 
-const createUser = async (request, response) => {
-    const { name, email, password } = request.body;
-
-    try {
-        // Generate SQL statement
-        const statement = 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *';
-        const values = [name, email, password];
-
-        // Execute SQL statement
-        const result = await db.query(statement, values);
-
-        return response.status(201).send(`User added with ID: ${result.rows[0].id}`);
-
-    } catch (err) {
-        throw new Error(err)
-    };
-};
-
 const updateUser = async (request, response) => {
     const id = parseInt(request.params.id);
     const { name, email, password } = request.body;
@@ -62,7 +44,7 @@ const updateUser = async (request, response) => {
         const result = await db.query(statement, values);
 
         return response.status(201).send(`User modified with ID:${id}`);
-        
+
     } catch (err) {
         throw new Error(err);
     };
@@ -112,7 +94,6 @@ const getUserByEmail = async (email) => {
 module.exports = {
     getUsers,
     getUserById,
-    createUser,
     updateUser,
     deleteUser,
     getUserByEmail

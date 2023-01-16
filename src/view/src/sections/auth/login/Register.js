@@ -5,18 +5,15 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { login as auth } from 'src/api';
+import { register } from 'src/api';
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from 'src/context/user';
-import { red } from '@mui/material/colors';
 
 function Copyright(props) {
   return (
@@ -38,25 +35,19 @@ export default function Register() {
 
   const navigate = useNavigate();
   const { login } = useUserContext();
-  const [incorrectCred, setIncorrectCred] = useState(false);
-  const [loginResponse, setLoginResponse] = useState('');
-
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const credentials = {
+      name: data.get('name'),
       email: data.get('email'),
       password: data.get('password'),
     };
     try {
-      const user = await auth(credentials);
-      login(user)
-      navigate('/dashboard');
+      return await register(credentials);
+
     } catch (err) {
-      setLoginResponse('Incorrect username or password');
-      setIncorrectCred(true);
     }
 
     return null;
@@ -111,9 +102,6 @@ export default function Register() {
               id="password"
               autoComplete="current-password"
             />
-            <Typography variant="body2" sx={{ mb: 5, color: red.A700 }}>
-              {incorrectCred && `${loginResponse}`}
-            </Typography>
 
             <Button
               type="submit"
