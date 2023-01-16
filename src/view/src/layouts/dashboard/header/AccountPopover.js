@@ -5,6 +5,9 @@ import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover 
 // mocks_
 import account from '../../../_mock/account';
 import { useUserContext } from 'src/context/user';
+import { logout as userExit } from 'src/api';
+import { useNavigate } from 'react-router-dom';
+
 
 
 // ----------------------------------------------------------------------
@@ -28,7 +31,7 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
 
-  const { user } = useUserContext();
+  const { user, logout } = useUserContext();
 
   const [open, setOpen] = useState(null);
 
@@ -36,8 +39,17 @@ export default function AccountPopover() {
     setOpen(event.currentTarget);
   };
 
+  const navigate = useNavigate();
+
   const handleClose = () => {
-    setOpen(null);
+    try {
+      setOpen(null);
+      userExit();
+      logout();
+      navigate('/login');
+    } catch (err) {
+    }
+    return null;
   };
 
   return (
