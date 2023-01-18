@@ -25,7 +25,7 @@ const createUser = async (request, response) => {
     };
 };
 
-const createFb =  async (data) => {
+const createFbGoogle =  async (data) => {
 
     try {
 
@@ -48,7 +48,7 @@ const createFb =  async (data) => {
 
 module.exports = {
     createUser,
-    createFb
+    createFbGoogle
 }
 
 

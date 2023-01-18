@@ -1,5 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
+const GoogleStrategy = require('passport-google-oidc');
 const bcrypt = require('bcrypt-nodejs');
 const passport = require('passport');
 const createError = require('http-errors');
@@ -40,11 +41,11 @@ module.exports = (app) => {
     ));
 
 
-    // Configure strategy to be use for Google login
+    // Configure strategy to be use for FB login
     passport.use(new FacebookStrategy({
-        clientID: FACEBOOK.CONSUMER_KEY,
-        clientSecret: FACEBOOK.CONSUMER_SECRET,
-        callbackURL: FACEBOOK.CALLBACK_URL
+        clientID: process.env.FACEBOOK.CONSUMER_KEY,
+        clientSecret: process.env.FACEBOOK.CONSUMER_SECRET,
+        callbackURL: process.env.FACEBOOK.CALLBACK_URL
     },
         async (accessToken, refreshToken, profile, done) => {
             try {
@@ -56,9 +57,26 @@ module.exports = (app) => {
         }
     ));
 
+    // Configure strategy to be use for FB login
+    passport.use(new GoogleStrategy({
+        clientID: process.env.GOOGLE.CONSUMER_KEY,
+        clientSecret: process.env.GOOGLE.CONSUMER_SECRET,
+        callbackURL: process.env.GOOGLE.CALLBACK_URL
+    },
+        async (accessToken, refreshToken, profile, done) => {
+            try {
+                const user = await googleLogin(profile);
+                return done(null, user);
+            } catch (err) {
+                return done(err);
+            }
+        }
+    ));
+
     return passport;
 
 };
+
 // tell passport how to serialize the user
 passport.serializeUser((user, done) => {
     console.log('Inside serializeUser callback. User id is saved to the session file store here')

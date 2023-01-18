@@ -114,6 +114,28 @@ const getUserByFbID = async (id) => {
     }
 };
 
+const getUserByGoogleID = async (id) => {
+    try {
+
+        // Generate SQL statement
+        const statement = `SELECT *
+                           FROM users
+                           WHERE google ->> 'id' = $1`
+        const values = [id];
+
+        // Execute SQL statment
+        const result = await db.query(statement, values);
+
+        if (result.rows?.length) {
+            return result.rows[0]
+        }
+
+        return null;
+
+    } catch (err) {
+        throw new Error(err);
+    }
+};
 
 module.exports = {
     getUsers,
@@ -121,5 +143,6 @@ module.exports = {
     updateUser,
     deleteUser,
     getUserByEmail,
-    getUserByFbID
+    getUserByFbID,
+    getUserByGoogleID
 };
