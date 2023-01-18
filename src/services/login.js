@@ -21,7 +21,7 @@ const login = async function (data) {
             throw createError(401, 'Incorrect username or password');
         }
 
-        return user;
+        return { id: user.id, name: user.name, email: user.email };
 
     } catch (err) {
         throw createError(500, err);
