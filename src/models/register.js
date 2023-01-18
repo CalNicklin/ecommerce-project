@@ -1,5 +1,7 @@
 const db = require('../db');
 const bcrypt = require('bcryptjs');
+const pgp = require('pg-promise')({ capSQL: true });
+
 
 const createUser = async (request, response) => {
 
@@ -23,8 +25,30 @@ const createUser = async (request, response) => {
     };
 };
 
+const createFb =  async (data) => {
+
+    try {
+
+      // Generate SQL statement - using helper for dynamic parameter injection
+      const statement = pgp.helpers.insert(data, null, 'users') + 'RETURNING *';
+  
+      // Execute SQL statment
+      const result = await db.query(statement);
+
+      if (result.rows?.length) {
+        return result.rows[0];
+      }
+
+      return null;
+
+    } catch(err) {
+      throw new Error(err);
+    }
+  }
+
 module.exports = {
-    createUser
+    createUser,
+    createFb
 }
 
 

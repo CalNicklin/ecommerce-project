@@ -1,6 +1,8 @@
 const { getUserByEmail } = require("../models/user");
 const createError = require('http-errors');
 const bcrypt = require('bcryptjs');
+const { getUserByFbID } = require("../models/facebook");
+const { createFb } = require("../models/register");
 
 
 const login = async function (data) {
@@ -29,6 +31,29 @@ const login = async function (data) {
 
 };
 
+const fbLogin = async function (profile) {
+
+    const { id, displayName } = profile;
+
+    try {
+        // Check if user exists
+        const user = await getUserByFbID(id);
+
+        // If no user found, create new user
+        if (!user) {
+            return await createFb({ facebook: { id, displayName } });
+        }
+
+        // User already exists, return profile
+        return user;
+
+    } catch (err) {
+        throw createError(500, err);
+    }
+
+};
+
 module.exports = {
-    login
+    login,
+    fbLogin
 }

@@ -1,8 +1,10 @@
 const LocalStrategy = require('passport-local').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 const bcrypt = require('bcrypt-nodejs');
 const passport = require('passport');
 const createError = require('http-errors');
 const { getUserByEmail } = require('../models/user');
+const { fbLogin } = require('../services/login');
 
 module.exports = (app) => {
 
@@ -10,16 +12,6 @@ module.exports = (app) => {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    // tell passport how to serialize the user
-    passport.serializeUser((user, done) => {
-        console.log('Inside serializeUser callback. User id is saved to the session file store here')
-        done(null, user.id);
-    });
-
-    passport.deserializeUser((id, done) => {
-        console.log('Inside DeserializeUser callback. User id is saved to the session file store here')
-        done(null, { id });
-    });
 
     // configure passport.js to use the local strategy
     passport.use(new LocalStrategy(
@@ -47,7 +39,34 @@ module.exports = (app) => {
         }
     ));
 
+
+    // Configure strategy to be use for Google login
+    passport.use(new FacebookStrategy({
+        clientID: FACEBOOK.CONSUMER_KEY,
+        clientSecret: FACEBOOK.CONSUMER_SECRET,
+        callbackURL: FACEBOOK.CALLBACK_URL
+    },
+        async (accessToken, refreshToken, profile, done) => {
+            try {
+                const user = await fbLogin(profile);
+                return done(null, user);
+            } catch (err) {
+                return done(err);
+            }
+        }
+    ));
+
     return passport;
 
 };
+// tell passport how to serialize the user
+passport.serializeUser((user, done) => {
+    console.log('Inside serializeUser callback. User id is saved to the session file store here')
+    done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+    console.log('Inside DeserializeUser callback. User id is saved to the session file store here')
+    done(null, { id });
+});
 

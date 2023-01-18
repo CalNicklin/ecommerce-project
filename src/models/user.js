@@ -91,10 +91,35 @@ const getUserByEmail = async (email) => {
     }
 };
 
+const getUserByFbID = async (id) => {
+    try {
+
+        // Generate SQL statement
+        const statement = `SELECT *
+                           FROM users
+                           WHERE facebook ->> 'id' = $1`
+        const values = [id];
+
+        // Execute SQL statment
+        const result = await db.query(statement, values);
+
+        if (result.rows?.length) {
+            return result.rows[0]
+        }
+
+        return null;
+
+    } catch (err) {
+        throw new Error(err);
+    }
+};
+
+
 module.exports = {
     getUsers,
     getUserById,
     updateUser,
     deleteUser,
-    getUserByEmail
+    getUserByEmail,
+    getUserByFbID
 };
