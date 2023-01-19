@@ -26,8 +26,12 @@ ShopProductCard.propTypes = {
 export default function ShopProductCard({ product }) {
   const { product_name, cover, price, colors, status, priceSale } = product;
 
+  const handleClick = {
+    
+  }
+
   return (
-    <Card>
+    <Card onClick={handleClick}>
       <Box sx={{ pt: '100%', position: 'relative' }}>
         {status && (
           <Label

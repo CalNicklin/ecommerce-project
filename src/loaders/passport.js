@@ -1,3 +1,4 @@
+
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const GoogleStrategy = require('passport-google-oidc');
@@ -43,9 +44,9 @@ module.exports = (app) => {
 
     // Configure strategy to be use for FB login
     passport.use(new FacebookStrategy({
-        clientID: process.env.FACEBOOK.CONSUMER_KEY,
-        clientSecret: process.env.FACEBOOK.CONSUMER_SECRET,
-        callbackURL: process.env.FACEBOOK.CALLBACK_URL
+        clientID: process.env.FACEBOOK_CONSUMER_KEY,
+        clientSecret: process.env.FACEBOOK_CONSUMER_SECRET,
+        callbackURL: process.env.FACEBOOK_CALLBACK_URL
     },
         async (accessToken, refreshToken, profile, done) => {
             try {
@@ -59,9 +60,9 @@ module.exports = (app) => {
 
     // Configure strategy to be use for FB login
     passport.use(new GoogleStrategy({
-        clientID: process.env.GOOGLE.CONSUMER_KEY,
-        clientSecret: process.env.GOOGLE.CONSUMER_SECRET,
-        callbackURL: process.env.GOOGLE.CALLBACK_URL
+        clientID: process.env.GOOGLE_CONSUMER_KEY,
+        clientSecret: process.env.GOOGLE_CONSUMER_SECRET,
+        callbackURL: process.env.GOOGLE_CALLBACK_URL
     },
         async (accessToken, refreshToken, profile, done) => {
             try {
