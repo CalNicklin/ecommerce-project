@@ -6,6 +6,8 @@ import { styled } from '@mui/material/styles';
 import { fCurrency } from '../../../utils/formatNumber';
 // components
 import Label from '../../../components/label';
+// navigate
+import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -24,10 +26,12 @@ ShopProductCard.propTypes = {
 };
 
 export default function ShopProductCard({ product }) {
-  const { product_name, cover, price, colors, status, priceSale } = product;
+  const { product_name, cover, price, status, priceSale, sku } = product;
 
-  const handleClick = {
-    
+  const navigate = useNavigate();
+
+  const handleClick =  () =>{
+    navigate(`${sku}`);
   }
 
   return (
