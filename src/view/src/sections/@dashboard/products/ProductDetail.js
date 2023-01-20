@@ -1,17 +1,13 @@
 import { Helmet } from 'react-helmet-async';
-import { useParams, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 // @mui
-import { Container, Box } from '@mui/material';
+import { Container, Box, Stack, Typography, Card, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
 // components
-import Label from '../../../components/label';
 import { ProductCartWidget } from '.';
-import { getProductsBySku } from 'src/api';
-import { ConstructionOutlined } from '@mui/icons-material';
 
 // ----------------------------------------------------------------------
 
@@ -31,9 +27,10 @@ ShopProductDetail.propTypes = {
 
 export default function ShopProductDetail() {
 
+    // Unpacks the state props from the product list page
     const { state } = useLocation();
     const { product } = state;
-    const { product_name, cover, price, status } = product;
+    const { product_name, cover, price } = product;
 
     return (
         <>
@@ -41,26 +38,25 @@ export default function ShopProductDetail() {
                 <title> Dashboard: Products | Minimal UI </title>
             </Helmet>
 
-            <Container>
-                <Box sx={{ pt: '100%', position: 'relative' }}>
-                    {/* {status && (
-                        <Label
-                            variant="filled"
-                            color={(status === 'sale' && 'error') || 'info'}
-                            sx={{
-                                zIndex: 9,
-                                top: 16,
-                                right: 16,
-                                position: 'absolute',
-                                textTransform: 'uppercase',
-                            }}
-                        >
-                            {status}
-                        </Label>
-                    )} */}
-                    <StyledProductImg alt={product_name} src={cover} />
-                </Box>
+            <Container maxWidth='xs'>
+                <Card>
+                    <Box sx={{ pt: '100%', position: 'relative' }}>
+                        <StyledProductImg alt={product_name} src={cover} sx={{ maxHeight: 1 / 1 }} />
+                    </Box>
+                </Card>
                 <ProductCartWidget />
+
+                <Stack spacing={2}>
+                    <Typography variant="heading2" noWrap>
+                        {product_name}
+                    </Typography>
+
+                    <Typography variant="subtitle1">
+                        {fCurrency(price)}
+                    </Typography>
+
+                    <Button variant="contained">Add to cart</Button>
+                </Stack>
             </Container>
         </>
     )

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 // @mui
-import { Box, Card, Link, Typography, Stack } from '@mui/material';
+import { Box, Card, Link, Typography, Stack, CardActionArea } from '@mui/material';
 import { styled } from '@mui/material/styles';
 // utils
 import { fCurrency } from '../../../utils/formatNumber';
@@ -8,7 +8,6 @@ import { fCurrency } from '../../../utils/formatNumber';
 import Label from '../../../components/label';
 // navigate
 import { useNavigate } from 'react-router-dom';
-import { Navigation } from '@mui/icons-material';
 
 // ----------------------------------------------------------------------
 
@@ -31,8 +30,8 @@ export default function ShopProductCard({ product }) {
 
   const navigate = useNavigate();
 
-  const handleClick =  () =>{
-    navigate(`${sku}`, {replace: true, state: {product}});
+  const handleClick = () => {
+    navigate(`${sku}`, { replace: true, state: { product } });
   };
 
   return (
@@ -56,30 +55,32 @@ export default function ShopProductCard({ product }) {
         <StyledProductImg alt={product_name} src={cover} />
       </Box>
 
-      <Stack spacing={2} sx={{ p: 3 }}>
-        <Link color="inherit" underline="hover">
-          <Typography variant="subtitle2" noWrap>
-            {product_name}
-          </Typography>
-        </Link>
-
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant="subtitle1">
-            <Typography
-              component="span"
-              variant="body1"
-              sx={{
-                color: 'text.disabled',
-                textDecoration: 'line-through',
-              }}
-            >
-              {priceSale && fCurrency(priceSale)}
+      <CardActionArea>
+        <Stack spacing={2} sx={{ p: 3 }}>
+          <Link color="inherit" underline="hover">
+            <Typography variant="subtitle2" noWrap>
+              {product_name}
             </Typography>
-            &nbsp;
-            {fCurrency(price)}
-          </Typography>
+          </Link>
+
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Typography variant="subtitle1">
+              <Typography
+                component="span"
+                variant="body1"
+                sx={{
+                  color: 'text.disabled',
+                  textDecoration: 'line-through',
+                }}
+              >
+                {priceSale && fCurrency(priceSale)}
+              </Typography>
+              &nbsp;
+              {fCurrency(price)}
+            </Typography>
+          </Stack>
         </Stack>
-      </Stack>
+      </CardActionArea>
     </Card>
   );
 }
