@@ -58,13 +58,13 @@ const addToCart = async (request, response) => {
 
         // Generate 2nd SQL 
         const statement2 = `INSERT INTO cartitems (cartid, sku, qty) 
-                            VALUES ($1, $2, $3)`;
+                            VALUES ($1, $2, $3) RETURNING *`;
         const values2 = [cartId.rows[0].cartid, sku, qty];
 
         // Execute 2nd SQL statement
         const result = await db.query(statement2, values2);
 
-        return response.status(201).send(`${qty} x ${sku} added to cart`);
+        return result.rows;
 
     } catch (err) {
         throw new Error(err)

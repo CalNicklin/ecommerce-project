@@ -33,7 +33,7 @@ export default function ShopProductDetail() {
     const { product } = state;
     const { product_name, cover, price } = product;
 
-    const handleClick = () => {
+    const handleClick = async () => {
         addToCart({"sku":"MTQ440T103", "qty":"4", "id":"10"});
     };
 
