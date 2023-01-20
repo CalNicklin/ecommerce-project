@@ -26,7 +26,7 @@ const createCart = async (request, response) => {
 };
 
 const getCartById = async (request, response) => {
-    const { id } = request.user;
+    const { id } = request.body;
 
     try {
         // Generate SQL statement
@@ -36,7 +36,7 @@ const getCartById = async (request, response) => {
         // Execute SQL statement
         const result = await db.query(statement, values);
 
-        return response.status(200).send(result.rows);
+        return result.rows;
 
     } catch (err) {
         throw new Error(err)

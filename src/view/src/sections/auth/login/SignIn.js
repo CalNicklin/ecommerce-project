@@ -13,7 +13,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { createCart, login as auth } from 'src/api';
+import { createCart, getCartById, login as auth } from 'src/api';
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from 'src/contexts/user';
 import { useCartContext } from 'src/contexts/cart';
@@ -57,6 +57,8 @@ export default function SignIn() {
       login(user)
       const cart = await createCart({ id: user.id })
       setCart(cart);
+      const cartItems = await getCartById({ id: user.id })
+      setCart(cartItems);
       navigate('/dashboard');
     } catch (err) {
       setLoginResponse('Incorrect username or password');

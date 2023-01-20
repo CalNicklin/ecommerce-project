@@ -66,9 +66,9 @@ export const createCart = async (id) => {
   }
 };
 
-export const getCartById = async () => {
+export const getCartById = async (id) => {
   try {
-    const response = await axios('http://localhost:8000/cart/')
+    const response = await axios('http://localhost:8000/cart/', id)
 
     return response.data
 
