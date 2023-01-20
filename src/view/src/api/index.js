@@ -79,7 +79,7 @@ export const getCartById = async (id) => {
 
 export const addToCart = async (data) => {
   try {
-    const response = axios.post('http://localhost:8000/cart/items')
+    const response = axios.post('http://localhost:8000/cart/items', data)
 
     return response.data
 

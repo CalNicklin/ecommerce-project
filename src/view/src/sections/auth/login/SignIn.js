@@ -57,8 +57,6 @@ export default function SignIn() {
       login(user)
       const cart = await createCart({ id: user.id })
       setCart(cart);
-      const cartItems = await getCartById({ id: user.id })
-      setCart(cartItems);
       navigate('/dashboard');
     } catch (err) {
       setLoginResponse('Incorrect username or password');

@@ -8,6 +8,7 @@ import { styled } from '@mui/material/styles';
 import { fCurrency } from '../../../utils/formatNumber';
 // components
 import { ProductCartWidget } from '.';
+import { addToCart } from 'src/api';
 
 // ----------------------------------------------------------------------
 
@@ -33,8 +34,8 @@ export default function ShopProductDetail() {
     const { product_name, cover, price } = product;
 
     const handleClick = () => {
-        
-    }
+        addToCart({"sku":"MTQ440T103", "qty":"4", "id":"10"});
+    };
 
     return (
         <>
@@ -59,9 +60,7 @@ export default function ShopProductDetail() {
                         {fCurrency(price)}
                     </Typography>
 
-                    <Button onClick={() => {
-                        alert('clicked');
-                    }} variant="contained">Add to cart</Button>
+                    <Button onClick={handleClick} variant="contained">Add to cart</Button>
                 </Stack>
             </Container>
         </>

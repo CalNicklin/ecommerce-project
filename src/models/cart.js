@@ -44,8 +44,7 @@ const getCartById = async (request, response) => {
 };
 
 const addToCart = async (request, response) => {
-    const { id } = request.user;
-    const { sku, qty } = request.body;
+    const { sku, qty, id } = request.body;
 
     try {
         // Generate first SQL statement for cartId
