@@ -9,6 +9,7 @@ import { fCurrency } from '../../../utils/formatNumber';
 // components
 import { ProductCartWidget } from '.';
 import { addToCart } from 'src/api';
+import { useCartContext } from 'src/contexts/cart';
 
 // ----------------------------------------------------------------------
 
@@ -33,8 +34,15 @@ export default function ShopProductDetail() {
     const { product } = state;
     const { product_name, cover, price } = product;
 
+    const { setCart } = useCartContext();
+
     const handleClick = async () => {
-        addToCart({"sku":"MTQ440T103", "qty":"4", "id":"10"});
+
+        // Fix this - make 'add to cart' button add the product selected
+        // Return the entire cart object to the context.
+
+        const cartItems = await addToCart({"sku":"MTQ440T103", "qty":"4", "id":"10"});
+        setCart(cartItems);
     };
 
     return (
