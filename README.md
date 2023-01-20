@@ -2,7 +2,7 @@
 A project to practice Node/Express REST API to provide typical functionality found in an ecommerce website.  Users can create accounts, view products, add products to a cart, and place/view orders.
 
 ## Running the app
-To run locally, `npm install`, then `npm run start`
+To run locally, `npm install`, then `npm start` from the root directory, and 'npm start' from within the src/view directory. 
 
 This project requires a [PostgreSQL](https://www.postgresql.org/) database to be running locally.
 
