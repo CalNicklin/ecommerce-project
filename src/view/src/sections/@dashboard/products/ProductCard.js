@@ -8,6 +8,7 @@ import { fCurrency } from '../../../utils/formatNumber';
 import Label from '../../../components/label';
 // navigate
 import { useNavigate } from 'react-router-dom';
+import { Navigation } from '@mui/icons-material';
 
 // ----------------------------------------------------------------------
 
@@ -31,8 +32,8 @@ export default function ShopProductCard({ product }) {
   const navigate = useNavigate();
 
   const handleClick =  () =>{
-    navigate(`${sku}`);
-  }
+    navigate(`${sku}`, {replace: true, state: {product}});
+  };
 
   return (
     <Card onClick={handleClick}>

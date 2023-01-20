@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 // @mui
@@ -11,6 +11,7 @@ import { fCurrency } from '../../../utils/formatNumber';
 import Label from '../../../components/label';
 import { ProductCartWidget } from '.';
 import { getProductsBySku } from 'src/api';
+import { ConstructionOutlined } from '@mui/icons-material';
 
 // ----------------------------------------------------------------------
 
@@ -30,22 +31,8 @@ ShopProductDetail.propTypes = {
 
 export default function ShopProductDetail() {
 
-    console.log('product detail page');
-
-    const [isLoading, setLoading] = useState(true);
-    const [product, setProduct] = useState([]);
-
-    const { sku } = useParams();
-
-    // GETs product data via API/index.js, sets local state.
-    useEffect(() => {
-        getProductsBySku(`http://localhost:8000/products/${sku}`)
-            .then((data) => {
-                setProduct(data)
-                setLoading(false);
-            })
-    }, [sku]);
-
+    const { state } = useLocation();
+    const { product } = state;
     const { product_name, cover, price, status } = product;
 
     return (
@@ -56,7 +43,7 @@ export default function ShopProductDetail() {
 
             <Container>
                 <Box sx={{ pt: '100%', position: 'relative' }}>
-                    {status && (
+                    {/* {status && (
                         <Label
                             variant="filled"
                             color={(status === 'sale' && 'error') || 'info'}
@@ -70,7 +57,7 @@ export default function ShopProductDetail() {
                         >
                             {status}
                         </Label>
-                    )}
+                    )} */}
                     <StyledProductImg alt={product_name} src={cover} />
                 </Box>
                 <ProductCartWidget />
