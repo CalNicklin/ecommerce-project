@@ -4,7 +4,7 @@ import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
 import account from '../../../_mock/account';
-import { useUserContext } from 'src/context/user';
+import { useUserContext } from 'src/contexts/user';
 import { logout as userExit } from 'src/api';
 import { useNavigate } from 'react-router-dom';
 

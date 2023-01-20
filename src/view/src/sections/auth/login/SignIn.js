@@ -13,9 +13,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { login as auth } from 'src/api';
+import { createCart, login as auth } from 'src/api';
 import { useNavigate } from 'react-router-dom';
-import { useUserContext } from 'src/context/user';
+import { useUserContext } from 'src/contexts/user';
+import { useCartContext } from 'src/contexts/cart';
 import { red } from '@mui/material/colors';
 
 function Copyright(props) {
@@ -38,6 +39,7 @@ export default function SignIn() {
 
   const navigate = useNavigate();
   const { login } = useUserContext();
+  const { setCart } = useCartContext();
   const [incorrectCred, setIncorrectCred] = useState(false);
   const [loginResponse, setLoginResponse] = useState('');
 
@@ -53,6 +55,8 @@ export default function SignIn() {
     try {
       const user = await auth(credentials);
       login(user)
+      const cart = await createCart({ id: user.id })
+      setCart(cart);
       navigate('/dashboard');
     } catch (err) {
       setLoginResponse('Incorrect username or password');

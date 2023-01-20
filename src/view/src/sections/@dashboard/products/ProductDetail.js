@@ -32,6 +32,10 @@ export default function ShopProductDetail() {
     const { product } = state;
     const { product_name, cover, price } = product;
 
+    const handleClick = () => {
+        
+    }
+
     return (
         <>
             <Helmet>
@@ -55,7 +59,9 @@ export default function ShopProductDetail() {
                         {fCurrency(price)}
                     </Typography>
 
-                    <Button variant="contained">Add to cart</Button>
+                    <Button onClick={() => {
+                        alert('clicked');
+                    }} variant="contained">Add to cart</Button>
                 </Stack>
             </Container>
         </>

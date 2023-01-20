@@ -3,7 +3,8 @@ const moment = require('moment');
 const { createOrder } = require('./order');
 
 const createCart = async (request, response) => {
-    const { id } = request.user;
+
+    const { id } = request.body;
     const created_at = moment.utc().toISOString();
     const modified = created_at;
 
@@ -11,13 +12,13 @@ const createCart = async (request, response) => {
 
         // Generate SQL statement
         const statement = `INSERT INTO cart (user_id, created_at, modified)
-                           VALUES ($1, $2, $3)`;
+                           VALUES ($1, $2, $3) RETURNING *`;
         const values = [id, created_at, modified]
 
         // Execute SQL statement
         const result = await db.query(statement, values);
 
-        return response.status(201).send(`Created cart for user with ID:${id}`);
+        return result.rows[0];
 
     } catch (err) {
         throw new Error(err)

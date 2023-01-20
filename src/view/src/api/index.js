@@ -24,7 +24,7 @@ export const login = async (data) => {
 
 export const logout = async () => {
   try {
-    const response = await axios.post('http://localhost:8000/auth/logout');
+    const response = await axios.post('http://localhost:8000/logout');
 
     return response.data;
 
@@ -49,8 +49,41 @@ export const getProductsBySku = async (url) => {
     const response = await axios(url);
 
     return response.data
-    
+
   } catch (err) {
     throw err.response.data;
   }
-}
+};
+
+export const createCart = async (id) => {
+  try {
+    const response = await axios.post('http://localhost:8000/cart/', id)
+
+    return response.data;
+
+  } catch (err) {
+    throw err.response.data
+  }
+};
+
+export const getCartById = async () => {
+  try {
+    const response = await axios('http://localhost:8000/cart/')
+
+    return response.data
+
+  } catch (err) {
+    throw err.response.data
+  }
+};
+
+export const addToCart = async (data) => {
+  try {
+    const response = axios.post('http://localhost:8000/cart/items')
+
+    return response.data
+
+  } catch (err) {
+    throw err.response.data
+  }
+};
